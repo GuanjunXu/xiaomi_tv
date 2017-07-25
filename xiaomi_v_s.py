@@ -87,6 +87,7 @@ def screencapAndPullOut(imgname, pullpath):
 while query:
     q = query.strip("\n").split(',')
     no = q[0]
+    print no + ":"
     word = q[1]
     try:
         launchReader()
@@ -127,4 +128,5 @@ while query:
     # f_result.write(str(dict_w).encode('utf-8'))
     query = f_query.readline()
     
-f_result.close()
+print "*** All clear ***"
+# f_result.close()
