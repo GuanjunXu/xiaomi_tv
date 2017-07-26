@@ -17,7 +17,7 @@ reader = Device(reader_d)
 reader_activity = "com.kingfore.TextToVoice/com.iflytek.common.LaunchService"
 controller_activity = "com.duokan.phone.remotecontroller/com.xiaomi.mitv.phone.remotecontroller.home.MainActivity"
 
-f_query = open("query_list_2.txt", "r")
+f_query = open("query_list.txt", "r")
 query = f_query.readline()
 
 wb = xlwt.Workbook()
@@ -78,17 +78,18 @@ def findText(txt):
     rec = s[after+2:-1]
     return res_count, rec
 
-def screencapAndPullOut(imgname, pullpath):
-    imgname = str(imgname)
-    os.popen("adb -s %s shell screencap -p /sdcard/%s.png"%(tv_d,imgname))
-    os.popen("adb -s %s pull /sdcard/%s.png %s"%(tv_d,imgname, pullpath))
-    os.popen("adb -s %s shell rm /sdcard/%s.png"%(tv_d,imgname))
+def screencapAndPullOut(pullpath):
+    os.popen("adb -s %s shell rm -rf /data/local/tmp/*.png"%tv_d)
+    os.popen("adb -s %s shell screencap -p /data/local/tmp/screencap.png"%tv_d)
+    os.popen("adb -s %s pull /data/local/tmp/screencap.png %s"%(tv_d, pullpath))
+    os.popen("adb -s %s shell rm -rf /data/local/tmp/*.png"%tv_d)
 
 while query:
     q = query.strip("\n").split(',')
     no = q[0]
     print no + ":"
     word = q[1]
+    f_name = work_path + os.sep + result_path + os.sep + no
     try:
         launchReader()
         reader(resourceId = 'com.kingfore.TextToVoice:id/mainEditText1').set_text(word) # 朗读机输入文字
@@ -116,17 +117,22 @@ while query:
         #     dict_w['tag'] = 'result_list'
         #     dict_w['recognition'] = tv(resourceId = 'com.xiaomi.voicecontrol:id/title').text
         #     dict_w['result_msg'] = tv(resourceId = 'com.xiaomi.voicecontrol:id/txtTitle').text
-        tv.dump("%s.xml"%(work_path + os.sep + result_path + os.sep + no))
-        screencapAndPullOut(no, work_path + os.sep + result_path)
+        tv.dump("%s.xml"%(f_name))
+        print "\tDump... "
+        screencapAndPullOut(f_name + ".png")
         tv.press('back')
-        print "Done."
-        print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-"
+        print "Done.\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-"
     except:
         # dict_w['tag'] = 'occur_err'
         print "occur_err"
         pass
     # f_result.write(str(dict_w).encode('utf-8'))
     query = f_query.readline()
+    if os.path.exists(f_name + ".png") and os.path.exists(f_name + ".xml"):
+        pass
+    else:
+        f_fail = open(f_name + ".txt", 'w')
+        f_fail.close()
     
 print "*** All clear ***"
 # f_result.close()
