@@ -17,7 +17,7 @@ reader = Device(reader_d)
 reader_activity = "com.kingfore.TextToVoice/com.iflytek.common.LaunchService"
 controller_activity = "com.duokan.phone.remotecontroller/com.xiaomi.mitv.phone.remotecontroller.home.MainActivity"
 
-f_query = open("query_list.txt", "r")
+f_query = open(r"query_list_2.txt", "r")
 query = f_query.readline()
 
 wb = xlwt.Workbook()
@@ -26,7 +26,7 @@ ws = wb.add_sheet('Xiaomi search result', cell_overwrite_ok = True)
 col_names = ["Query", "Recognition", "ResultCount", "Results", "ImgPath", "ResultMsg"]
 
 work_path = os.getcwd()
-result_path = "Results"
+result_path = "Results_0801"
 try:
     os.mkdir(result_path)
 except:
