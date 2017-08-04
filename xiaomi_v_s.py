@@ -26,7 +26,7 @@ ws = wb.add_sheet('Xiaomi search result', cell_overwrite_ok = True)
 col_names = ["Query", "Recognition", "ResultCount", "Results", "ImgPath", "ResultMsg"]
 
 work_path = os.getcwd()
-result_path = "Results_0801"
+result_path = "Results_0802"
 try:
     os.mkdir(result_path)
 except:
