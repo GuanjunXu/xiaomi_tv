@@ -14,13 +14,13 @@ for r in resultlist:
         resultlist.remove(r)
 
 qNo_q_list = []
-for q in open('query_list.txt', 'r', encoding = 'utf-8'):
+for q in open('query_list.txt', 'r', encoding = 'utf8'):
     qq = q.strip("\n").split(',')
     qNo_q_list.append(qq[0])
     qNo_q_list.append(qq[1])
 
-f_analysis = open(work_path + os.sep + "ResultAnalysis.txt", 'w')
-f_fail = open(work_path + os.sep + "An_ErrList.txt", 'w')
+f_analysis = open(work_path + os.sep + "ResultAnalysis.txt", 'w', encoding = 'utf8')
+f_fail = open(work_path + os.sep + "An_ErrList.txt", 'w', encoding = 'utf8')
 for x in resultlist:
     print(x, end = '')
     to_write = {}
@@ -28,7 +28,7 @@ for x in resultlist:
     q_index = qNo_q_list.index(x[:-4])
     to_write['query'] = qNo_q_list[q_index + 1]
     try:
-        f_xml = open(result_path + os.sep + x, 'r', encoding = 'utf-8')
+        f_xml = open(result_path + os.sep + x, 'r', encoding = 'utf8')
         xml_lines = f_xml.readlines()
         xml_string = ' '.join(xml_lines)
         # if '" resource-id="com.mitv.tvhome:id/name"' in xml_string:
